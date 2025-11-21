@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PosturGO - Pose Tracking & Ergonomi Assessment</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <!-- Header section -->
+        <header>
+            <div>
+                <h1>PosturGO</h1>
+            </div>
+        </header>
+
+        <!-- Main content area -->
+        <main>
+            <!-- Left column - Video and Controls -->
+            <div class="main-content">
+                <!-- Video display section -->
+                <div class="video-container">
+                    <video id="videoElement" autoplay playsinline></video>
+                    <canvas id="canvasElement"></canvas>
+                    
+                    <!-- Status indicator -->
+                    <div id="statusIndicator" class="status-indicator">
+                        <span class="status-dot"></span>
+                        <span id="statusText">Menginisialisasi kamera...</span>
+                    </div>
+                </div>
+
+                <!-- Controls section -->
+                <div class="controls">
+                    <button id="startBtn" class="btn btn-primary">
+                        <span class="btn-icon">▶</span>
+                        Mulai Tracking
+                    </button>
+                    <button id="stopBtn" class="btn btn-secondary" disabled>
+                        <span class="btn-icon">⏸</span>
+                        Hentikan
+                    </button>
+                    <button id="toggleSettingsBtn" class="btn btn-outline">
+                        <span class="btn-icon">⚙️</span>
+                        Pengaturan
+                    </button>
+                </div>
+
+                <!-- Information section - Moved here, horizontal layout -->
+                <div class="info-section info-section-horizontal">
+                    <h3>Informasi</h3>
+                    <div class="info-grid info-grid-horizontal">
+                        <div class="info-card">
+                            <div class="info-label">Landmarks Terdeteksi</div>
+                            <div class="info-value" id="landmarkCount">0</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">FPS</div>
+                            <div class="info-value" id="fpsCounter">0</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Status</div>
+                            <div class="info-value" id="detectionStatus">Tidak Aktif</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right sidebar - Settings and Info -->
+            <div class="sidebar">
+
+                <!-- REBA/RULA Assessment Section -->
+                <div class="info-section">
+                    <h3>Ergonomi Assessment</h3>
+                    <div class="info-grid">
+                        <!-- REBA Card -->
+                        <div class="info-card ergo-card">
+                            <div class="info-label">REBA Score</div>
+                            <div class="info-value ergo-score" id="rebaScore">0</div>
+                            <div class="ergo-risk" id="rebaRisk">N/A</div>
+                            <div class="ergo-description">Rapid Entire Body Assessment</div>
+                        </div>
+                        <!-- RULA Card -->
+                        <div class="info-card ergo-card">
+                            <div class="info-label">RULA Score</div>
+                            <div class="info-value ergo-score" id="rulaScore">0</div>
+                            <div class="ergo-risk" id="rulaRisk">N/A</div>
+                            <div class="ergo-description">Rapid Upper Limb Assessment</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings panel -->
+                <div id="settingsPanel" class="settings-panel hidden">
+                    <h3>Pengaturan</h3>
+                    <div class="setting-item">
+                        <label for="minDetectionConfidence">
+                            Minimum Detection Confidence: 
+                            <span id="minDetectionValue">0.5</span>
+                        </label>
+                        <input type="range" id="minDetectionConfidence" 
+                               min="0" max="1" step="0.1" value="0.5">
+                    </div>
+                    <div class="setting-item">
+                        <label for="minTrackingConfidence">
+                            Minimum Tracking Confidence: 
+                            <span id="minTrackingValue">0.5</span>
+                        </label>
+                        <input type="range" id="minTrackingConfidence" 
+                               min="0" max="1" step="0.1" value="0.5">
+                    </div>
+                    <div class="setting-item">
+                        <label for="modelComplexity">
+                            Model Complexity:
+                        </label>
+                        <select id="modelComplexity">
+                            <option value="0">Light (Cepat)</option>
+                            <option value="1" selected>Full (Seimbang)</option>
+                            <option value="2">Heavy (Akurat)</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="enableSmoothing" checked>
+                            Enable Smoothing
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>Dibuat dengan MediaPipe Pose Detection</p>
+        </footer>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item active">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                </span>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="ai-chat.html" class="nav-item">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                </span>
+                <span class="nav-label">AI Chat</span>
+            </a>
+            <a href="account.html" class="nav-item">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </span>
+                <span class="nav-label">Akun</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Load our custom JavaScript -->
+    <script type="module" src="app.js"></script>
+    <script src="nav.js"></script>
+</body>
+</html>
+

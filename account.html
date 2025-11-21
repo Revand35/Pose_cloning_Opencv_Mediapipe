@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akun - PosturGO</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+    <style>
+        .account-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%);
+            padding-bottom: 70px; /* Space untuk bottom nav */
+        }
+        .account-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-blue) 100%);
+            color: white;
+            padding: 25px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.2);
+        }
+        .account-header h1 {
+            margin: 0;
+            font-size: 1.6em;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .account-content {
+            flex: 1;
+            max-width: 900px;
+            margin: 30px auto;
+            width: 100%;
+            padding: 0 20px;
+        }
+        .account-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.1);
+            transition: all 0.3s ease;
+        }
+        .account-card:hover {
+            box-shadow: 0 8px 30px rgba(14, 165, 233, 0.15);
+            transform: translateY(-2px);
+        }
+        .account-card h2 {
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(14, 165, 233, 0.1);
+        }
+        .account-card h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(180deg, var(--primary-blue) 0%, var(--accent-blue) 100%);
+            border-radius: 2px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.2s ease;
+        }
+        .info-row:hover {
+            background: rgba(14, 165, 233, 0.03);
+            margin: 0 -25px;
+            padding-left: 25px;
+            padding-right: 25px;
+            border-radius: 8px;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9em;
+        }
+        .info-value {
+            color: var(--primary-blue);
+            font-weight: 600;
+            font-size: 0.95em;
+            text-align: right;
+        }
+        .logout-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .logout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        }
+        .logout-btn:active {
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="account-container">
+        <div class="account-header">
+            <h1>👤 Akun Saya</h1>
+        </div>
+        
+        <div class="account-content">
+            <div class="account-card">
+                <h2>Informasi Akun</h2>
+                <div class="info-row">
+                    <span class="info-label">Nama</span>
+                    <span class="info-value" id="displayName">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email</span>
+                    <span class="info-value" id="userEmail">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">User ID</span>
+                    <span class="info-value" id="userId">-</span>
+                </div>
+            </div>
+            
+            <div class="account-card">
+                <h2>Statistik</h2>
+                <div class="info-row">
+                    <span class="info-label">Total Sesi Tracking</span>
+                    <span class="info-value" id="totalSessions">0</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Skor REBA Rata-rata</span>
+                    <span class="info-value" id="avgReba">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Skor RULA Rata-rata</span>
+                    <span class="info-value" id="avgRula">-</span>
+                </div>
+            </div>
+            
+            <button class="logout-btn" id="logoutBtn">Keluar</button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+            </span>
+            <span class="nav-label">Home</span>
+        </a>
+        <a href="ai-chat.html" class="nav-item">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+            </span>
+            <span class="nav-label">AI Chat</span>
+        </a>
+        <a href="account.html" class="nav-item active">
+            <span class="nav-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+            </span>
+            <span class="nav-label">Akun</span>
+        </a>
+    </nav>
+
+    <script type="module" src="account.js"></script>
+    <script src="nav.js"></script>
+</body>
+</html>
+
